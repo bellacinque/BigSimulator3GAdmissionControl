@@ -34,14 +34,15 @@ Users(:,4) = Ptmax./PL;                   %%%AGGIUNGERE SHADOWING
 %%Considering Shadowing with standard deviation between 6 dB and 10 dB in
 %%urban environment.
 
-% Pr_mean_dB = 10^(Users(:,4)./10); 
-% 
-% std_Dev_dB = 8;
-% 
-% %%Generate values from a normal distribution with mean Pr_mean_dB
-%         %%and standard deviation std_Dev_dB (for .
-% 
-% Pr_shadowing_dB = Pr_mean_dB + std_Dev_dB.*randn(D,1);
+Pr_mean_dB = 10*log10(Users(:,4)); 
+
+std_Dev_dB = 8;
+
+%%Generate values from a normal distribution with mean Pr_mean_dB
+        %%and standard deviation std_Dev_dB (for .
+
+%% Shadowing considers the distance of user with respect to their BS
+Pr_shadowing_dB = Pr_mean_dB + std_Dev_dB.*randn(length(Users(:,3)),1);
 
 
 %%Potenza trasmessa dall'utente dopo Power Control 
@@ -64,5 +65,13 @@ PL_allUsers = 10.^(PL_dB_allUsers/10);
 %end
 %Pr_allUsers = x./PL_allUsers;               
 Pr_allUsers = (Users(:,5)./PL_allUsers); 
+
+%% Considering shadowing I don't take Power Control (that counteracts it)
+
+Pr_mean_allUsers = Ptmax./PL_allUsers;
+Pr_mean_allUsers_dB = 10*log10(Pr_mean_allUsers);
+Pr_shadowing_allUsers_dB = Pr_mean_allUsers_dB + std_Dev_dB.*randn(length(D),1);
+
+
 %%
 
