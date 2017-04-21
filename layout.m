@@ -5,7 +5,7 @@
 
 %% Generate hexagonal grid
 
-radius  = 600;                          % Cell Radius 
+radius  = 400;                          % Cell Radius 
 nBs     = 37;                           % Number of Base Stations
 
 [X , Y] = baseStationPosition(radius);   

@@ -10,19 +10,21 @@ Imax= 10^(-11);
 %Primo ciclo di admission control: interferenza inziale zero
  Itot=0;
  
- for i=1:37
+ v = randperm(nBs);     %Vettore permuta indici BS
+ 
+ for i=1:nBs
      
      %Selction of rows correspondent to BS i
-     ind = Users(:,2)==i;
+     ind = Users(:,2)==v(i);
      UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS i
      %primo utente sempre ammesso
      Users(UsersCell(1,1),7) = 1;
      %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
      Interferers = find(Users(:,7)==1);
-     Itot= sum(Pr_allUsers(Interferers,i));
+     Itot= sum(Pr_withShAllUsers(Interferers,v(i)));
      %Itot= Itot+ UsersCell(1,6);     %aggiunta di interferenza causata da utente 1
      %potenza di rumore singolo utente
-     %%Pn= k*Tsys*Rb where k = 1.38*10^-23, Tsys = 1000°K and Rb = 100 Kbit/s for video traffic only.
+     %%Pn= k*Tsys*Rb where k = 1.38*10^-23, Tsys = 1000?K and Rb = 100 Kbit/s for video traffic only.
      Pn = 1.38 * 10^-15;  %% Power in Watt
      Pnoise= Pn;
      %Potenza totale ricevuta 
@@ -53,14 +55,15 @@ Imax= 10^(-11);
 %%     
 %Secondo ciclo: intererferenza iniziale uguale all'interferenza di tutti
 %               gli utenti ammessi alla rete nel ciclo 1
-      
+    v = randperm(nBs);     %Vettore permuta indici BS  
+
     for i=1:37
      %Selction of rows correspondent to BS i
-     ind = Users(:,2)==i;
+     ind = Users(:,2)==v(i);
      UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS i
      %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
      Interferers = find(Users(:,7)==1);
-     Itot= sum(Pr_allUsers(Interferers,i))-sum(Pr_allUsers(UsersCell(:,1),i));
+     Itot= sum(Pr_withShAllUsers(Interferers,v(i)))-sum(Pr_withShAllUsers(UsersCell(:,1),v(i)));
      %Potenza di rumore singolo utente(stessa banda per ogni utente)
      Pn=10^(-15);
      Pnoise=Pn;

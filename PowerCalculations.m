@@ -59,19 +59,24 @@ Users(:,6)= Users(:,5)./PL;                     %% ?! = Pro
 PL_dB_allUsers =  46.33 + (44.9-(6.55*log10(h1)))*log10(D/1000) + 33.9*log10(f) - 13.82*log10(h1);
 PL_allUsers = 10.^(PL_dB_allUsers/10);
 
-%    x = zeros(length(D), 37);
-%for i=1:37
-%    x(:,i) = Users(:,5);
-%end
-%Pr_allUsers = x./PL_allUsers;               
-Pr_allUsers = (Users(:,5)./PL_allUsers); 
+   x = zeros(length(D), 37);
+for i=1:37
+   x(:,i) = Users(:,5);
+end
+Pr_mean_allUsers = x./PL_allUsers;               
+% Pr_allUsers = Users(:,5)./PL_allUsers; 
 
 %% Considering shadowing I don't take Power Control (that counteracts it)
 
-Pr_mean_allUsers = Ptmax./PL_allUsers;
 Pr_mean_allUsers_dB = 10*log10(Pr_mean_allUsers);
-Pr_shadowing_allUsers_dB = Pr_mean_allUsers_dB + std_Dev_dB.*randn(length(D),1);
 
+for i=1:37
+   x(:,i) = std_Dev_dB*randn(nUsers,1);
+end
 
+% Pr_withShAllUsers_dB = Pr_mean_allUsers_dB + std_Dev_dB.*randn(nUsers,1);
+Pr_withShAllUsers_dB = Pr_mean_allUsers_dB + x;
+
+Pr_withShAllUsers = 10.^(Pr_withShAllUsers_dB/10);
 %%
       
