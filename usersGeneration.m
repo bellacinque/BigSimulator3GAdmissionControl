@@ -9,7 +9,7 @@ areaCircle = pi*radius^2;                                   %area cerchio circos
 areaPlus= (areaCircle-areaHex)/3;
 areaTot = nBs*(areaHex+areaPlus);                           %area totate esagoni + area esterna
 
-nUsers = round(areaTot/100);                                %n.utenti fissata la densità
+nUsers = round(areaTot/100);                                %n.utenti fissata la densit?
 %nUsers = round((meanUsers*nBs)*areaQ/areaTot);  %numero di users da generare per avere 32users di media all'interno degli esagoni
 
 % generazione su un quadrato
@@ -32,7 +32,7 @@ index   =   ones(nUsers,1);
 % MATRICE USERS
 % Matrice con: numero utente|Bs in cui ? accampato|distanza da Bs in cui ?
 %%accampato |Pr before PC|Ptx after PC|Pr|admission y or n 
-Users = zeros(length(D),7);
+Users = zeros(length(D),8);
 
 for i=1:nUsers
     cellIndex=1;

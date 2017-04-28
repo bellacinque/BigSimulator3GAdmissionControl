@@ -65,7 +65,7 @@ Imax= 10^(-11);
      Interferers = find(Users(:,7)==1);
      Itot= sum(Pr_withShAllUsers(Interferers,v(i)))-sum(Pr_withShAllUsers(UsersCell(:,1),v(i)));
      %Potenza di rumore singolo utente(stessa banda per ogni utente)
-     Pn=10^(-15);
+     Pn=1.38*10^(-15);
      Pnoise=Pn;
      %Potenza totale ricevuta 
      Ptot= Itot+Pn;
@@ -96,12 +96,43 @@ Imax= 10^(-11);
     end
     
 %%
-%PL_c_i =  10^((46.33 + (44.9-(6.55*log10(h1)))*log10(radius/1000) + 33.9*log10(f) - 13.82*log10(h1))/10);
-%index_admUsers=find(Users(:,7)==1);
-%C = Users(index_admUsers,6);
-%I = sum(Users(:,6));
-%SIR = C/(I-C;
-    
-    
+%%%%Directed retry
+
+% ind = find(Users(:,7)==0);
+% %%Utilizzo UsersCell ma non sono gli utenti della cella, bens? gli utenti
+% %%non ammessi
+% UsersNotAd = Users(ind,:);
+% for i=1:length(UsersNotAd)
+%     ind = find(D(UsersNotAd(:,1),:)>Pro,4);    %%trova BS pi? vicine
+%     %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
+%     Interferers = find(Users(:,7)==1);
+%     Itot= sum(Pr_withShAllUsers(Interferers,ind(2)));
+%         
+%     
+%     
+% end
+
+
+
+%%
+%%%Calcolo C/I di ogni utente, risultato in colonna 8 di "Users"
+
+  for i=1:37
+     %Selction of rows correspondent to BS i
+     ind = Users(:,2)==i;
+     UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS i
+     %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
+     Interferers = find(Users(:,7)==1);
+     Itot= sum(Pr_withShAllUsers(Interferers,i));
+     count=0;
+     for k=1:length(UsersCell)
+         %%Calcolo C/I utente
+         Users(UsersCell(k,1),8) = Users(UsersCell(k,1),6)/(Itot-Users(UsersCell(k,1),6));
+     end
+  end
+   
+%%
+
+
         
         

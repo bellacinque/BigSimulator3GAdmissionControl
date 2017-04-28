@@ -9,7 +9,7 @@ clc          % Clear the command window
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%variables
-radius  = 50;                          % Cell Radius 
+radius  = 35;                          % Cell Radius 
 
 
 layout;
