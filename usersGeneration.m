@@ -1,14 +1,16 @@
 %% Generazione utenti
 
-meanUsers = 32;                                             %numero medio utenti per esagono                                                %numero di esagoni
+%meanUsers = 32;                                             %numero medio utenti per esagono                                                %numero di esagoni
 radiusTot = 7*(sqrt(3)/2*radius);
 
 areaQ = (2*radiusTot)^2;                                    %area quadrato su cui vengono generati gli users
 areaHex = (radius^2)*3*sqrt(3)/2;                           %area singolo esagono
 areaCircle = pi*radius^2;                                   %area cerchio circoscritto esagono
 areaPlus= (areaCircle-areaHex)/3;
-areaTot = nBs*(areaHex+areaPlus);                           %area totate esagoni
-nUsers = round((meanUsers*nBs)*areaQ/areaTot);  %numero di users da generare per avere 32users di media all'interno degli esagoni
+areaTot = nBs*(areaHex+areaPlus);                           %area totate esagoni + area esterna
+
+nUsers = round(areaTot/100);                                %n.utenti fissata la densità
+%nUsers = round((meanUsers*nBs)*areaQ/areaTot);  %numero di users da generare per avere 32users di media all'interno degli esagoni
 
 % generazione su un quadrato
 usersPositionX = -radiusTot + (radiusTot-(-radiusTot)).*rand(nUsers,1);

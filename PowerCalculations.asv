@@ -68,4 +68,5 @@ Pr_withShAllUsers_dB = Pr_mean_allUsers_dB + x;
 Pr_withShAllUsers = 10.^(Pr_withShAllUsers_dB/10);
 %%
 
+C/I = 
       
