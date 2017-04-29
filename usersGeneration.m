@@ -32,7 +32,7 @@ index   =   ones(nUsers,1);
 % MATRICE USERS
 % Matrice con: numero utente|Bs in cui ? accampato|distanza da Bs in cui ?
 %%accampato |Pr before PC|Ptx after PC|Pr|admission y or n 
-Users = zeros(length(D),8);
+Users = zeros(length(D(:,1)),8);
 
 for i=1:nUsers
     cellIndex=1;
