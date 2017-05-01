@@ -5,86 +5,81 @@
 %             degli utenti ammessi alla rete nel ciclo 1
 
 %Interferenza massima 
-Imax= 5*10^(-11);
+Imax = 5*10^(-10);
 %%
- Itot=0;    %Primo ciclo di admission control: interferenza inziale zero
- loadF = zeros(37,1);        %load factor
+%Primo ciclo di admission control: interferenza inziale zero
+ Itot = zeros(37,1);    
+ Ctot = zeros(37,1);    %Potenza ricevuta utenti ammessi BS 
  v = randperm(nBs);     %Vettore permuta indici BS
- 
- for j=1:nBs
-     
-     %Selction of rows correspondent to BS i
-     ind = Users(:,2)==v(j);
+ for i=1:nBs
+     %Selezione utenti accampati in BS i
+     ind = Users(:,2)==v(i);
      UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS i
-     %primo utente sempre ammesso
-     Users(UsersCell(1,1),7) = 1;
+     Users(UsersCell(1,1),7) = 1;        %primo utente sempre ammesso
+     %Potenza ricevuta da utenti ammessi nella BS i
+     Ctot(v(i),1) = UsersCell(1,6); 
      %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
      Interferers = find(Users(:,7)==1);
-     Itot= sum(Pr_withShAllUsers(Interferers,v(j)));
-     %Itot= Itot+ UsersCell(1,6);     %aggiunta di interferenza causata da utente 1
-     %potenza di rumore singolo utente
-     %%Pn= k*Tsys*Rb where k = 1.38*10^-23, Tsys = 1000?K and Rb = 100 Kbit/s for video traffic only.
-     Pn = 1.38 * 10^-15;  %% Power in Watt
-     Pnoise= Pn;
-     %Potenza totale ricevuta 
-     Ptot= Itot+Pn;
+     Itot(v(i)) = sum(Pr_withShAllUsers(Interferers,v(i)));
+          
+     %Potenza di rumore singolo utente
+     Pn = 1.38 * 10^-15;  %%Pn= k*Tsys*Rb where k = 1.38*10^-23, Tsys = 1000?K and Rb = 100 Kbit/s for video traffic only.
+     Pnoise= 2*Pn;    %dubbio ???????
      
      count=0;
      for k=2:length(UsersCell(:,1))
          if count<32
          %%calcolo interferenza causata da utente k
-          Ptot = UsersCell(k,6) + Itot + Pnoise;                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
-          loadF(v(j)) = loadF(v(j))+UsersCell(k,6)/Ptot;
-          deltaI = UsersCell(k,6)/(1-loadF(v(j)));
-     if Itot+deltaI < Imax
-         %user k is admitted
-         Users(UsersCell(k,1),7) = 1;
-         Itot=Itot+UsersCell(k,6);
-         Pnoise=Pnoise + Pn;
-         count= count+1;
-     end
-     
+          Ptot = UsersCell(k,6) + Itot(v(i)) + Pnoise;                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
+          loadF = (UsersCell(k,6)+Ctot(v(i),1))/Ptot;
+          deltaI = UsersCell(k,6)/(1-loadF);
+            if Itot(v(i))+deltaI < Imax
+             %user k is admitted
+             Users(UsersCell(k,1),7) = 1;
+             Itot(v(i)) = Itot(v(i))+UsersCell(k,6);
+             Ctot(v(i)) = Ctot(v(i)) + UsersCell(k,6);
+             Pnoise = Pnoise + Pn;
+             count = count+1;
+            end
          end
-     end
-     
+     end 
  end
 
 %%     
 %Secondo ciclo: intererferenza iniziale uguale all'interferenza di tutti
 %               gli utenti ammessi alla rete nel ciclo 1
     v = randperm(nBs);     %Vettore permuta indici BS  
-    loadF = zeros(37,1);      %load factor
+    Ctot = zeros(37,1);    %Potenza ricevuta utenti ammessi BS 
     count = zeros(37,1);
-
-    for j=1:37
+    
+    for i=1:37
      %Selction of rows correspondent to BS i
-     ind = Users(:,2)==v(j);
+     ind = Users(:,2)==v(i);
      UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS i
+     %Potenza ricevuta da utenti ammessi nella BS i
+     Ctot(v(i),1) = UsersCell(1,6); 
      %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
      Interferers = find(Users(:,7)==1);
-     Itot= sum(Pr_withShAllUsers(Interferers,v(j)))-sum(Pr_withShAllUsers(UsersCell(:,1),v(j)));
+     Itot(v(i))= sum(Pr_withShAllUsers(Interferers,v(i)))-sum(Pr_withShAllUsers(UsersCell(:,1),v(i)));
      %Potenza di rumore singolo utente(stessa banda per ogni utente)
      Pn=1.38*10^(-15);
-     Pnoise(v(j))=Pn;
-     %Potenza totale ricevuta 
-     Ptot= Itot+Pn;
+     Pnoise(v(i))=2*Pn;
      
      for k=1:length(UsersCell(:,1))
-         
-         if count(v(j))<32
+         if count(v(i))<32
          %%calcolo interferenza causata da utente k
-          Ptot = UsersCell(k,6) + Itot + Pnoise(v(j));                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
-          loadF(v(j)) = loadF(v(j))+UsersCell(k,6)/Ptot;
-          deltaI = UsersCell(k,6)/(1-loadF(v(j)));
-     if Itot+deltaI < Imax
-         %user k is admitted
-         Users(UsersCell(k,1),7) = 1;
-         Itot=Itot+UsersCell(k,6);
-         Pnoise(v(j))=Pnoise(v(j)) + Pn;
-         count(v(j))=count(v(j))+1;
-     else
-         Users(UsersCell(k,1),7) = 0;
-     end 
+          Ptot = UsersCell(k,6) + Itot(v(i)) + Pnoise(v(i));                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
+          loadF = (UsersCell(k,6)+Ctot(v(i)))/Ptot;
+          deltaI = UsersCell(k,6)/(1-loadF);
+             if Itot(v(i))+deltaI < Imax
+                 %user k is admitted
+                 Users(UsersCell(k,1),7) = 1;
+                 Itot(v(i))=Itot(v(i))+UsersCell(k,6);
+                 Pnoise(v(i))=Pnoise(v(i)) + Pn;
+                 count(v(i))=count(v(i))+1;
+             else
+                 Users(UsersCell(k,1),7) = 0;
+             end 
          else 
              Users(UsersCell(k,1),7) = 0;
          end
@@ -95,23 +90,23 @@ Imax= 5*10^(-11);
 %%%%Directed retry
 
 ind = find(Users(:,7)==0);
-%%Utilizzo UsersCell ma non sono gli utenti della cella, bens? gli utenti
-%%non ammessi
+%Utilizzo UsersCell ma non sono gli utenti della cella, bens? gli utenti
+%non ammessi
 UsersNotAd = Users(ind,:);
-for i=1:length(UsersNotAd)
+for i=1:length(UsersNotAd(:,1))
     [max,ind1] = sort((Pr_withShAllUsers(UsersNotAd(i,1),:)),'descend'); %%ordina potenze ricevute alla BS da utente  
     
     for j=1:4
         if count(ind1(j))<32
         %%calcolo interferenza causata da utente k
-        Ptot = max(j) + Itot + Pnoise(ind1(j));                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
-        loadF(ind1(j)) = loadF(ind1(j))+max(j)/Ptot;
-        deltaI = max(j)/(1-loadF(ind1(j)));
+        Ptot = max(j) + Itot(ind1(j)) + Pnoise(ind1(j));                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
+        loadF = (Ctot(ind1(j))+max(j))/Ptot;
+        deltaI = max(j)/(1-loadF);
         %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
         Interferers = find(Users(:,7)==1);
-        Itot= sum(Pr_withShAllUsers(Interferers,ind1(j)));
+        Itot(ind1(j)) = sum(Pr_withShAllUsers(Interferers,ind1(j)));
         
-        if Itot+deltaI < Imax
+        if Itot(ind1(j))+deltaI < Imax
          Users(UsersNotAd(i,1),7) = 1;      %user k is admitted
          Pnoise(ind1(j))=Pnoise(ind1(j)) + Pn;
          count(ind1(j))=count(ind1(j))+1;
@@ -130,11 +125,10 @@ end
   for j=1:37
      %Selction of rows correspondent to BS i
      ind = Users(:,2)==j;
-     UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS i
+     UsersCell = Users(ind, :);           %Matrice degli utenti accampati in BS i
      %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
      Interferers = find(Users(:,7)==1);
      Itot= sum(Pr_withShAllUsers(Interferers,j));
-     count=0;                                   %?!?!?!
      for k=1:length(UsersCell(:,1))
          %%Calcolo C/I utente
          Users(UsersCell(k,1),8) = Users(UsersCell(k,1),6)/(Itot-Users(UsersCell(k,1),6));

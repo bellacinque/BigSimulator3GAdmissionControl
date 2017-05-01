@@ -14,7 +14,7 @@ nUsersRif = length(ind);
 AdmittedUsers = sum(Users(ind,7));
 
 Percentage = AdmittedUsers/length(ind);
-fprintf('%s%d\n%s%d\n%s%f\n','Cycle ',iterator,'Utenti ammessi BS di riferimento: ', AdmittedUsers,'Percentuale utenti ammessi BS di riferimento: ', Percentage);
+%fprintf('%s%d\n%s%d\n%s%f\n','Cycle ',iterator,'Utenti ammessi BS di riferimento: ', AdmittedUsers,'Percentuale utenti ammessi BS di riferimento: ', Percentage);
 
 nUsersTotRif = nUsersTotRif + nUsersRif;
 AdmittedUsersTot = AdmittedUsersTot + AdmittedUsers;

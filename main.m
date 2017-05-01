@@ -28,8 +28,8 @@ for iterator=1:nCycles
     
 end
 
-BLRate = AdmittedUsersTot/nUsersTotRif;
-fprintf('%s%d\n%s%f\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot,'Percentuale UtentiTOT ammessi BS di riferimento: ', BLRate);
+AdmissionPerc = 100*AdmittedUsersTot/nUsersTotRif;
+fprintf('%s%d\n%s%f\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot,'Percentuale UtentiTOT ammessi BS di riferimento: ', AdmissionPerc);
 
 %plot per vedere i valori di c/i
 %plot(Users(:,1),Users(:,8),'ob');
