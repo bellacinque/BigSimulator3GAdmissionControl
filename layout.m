@@ -4,10 +4,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Generate hexagonal grid
-
-nBs     = 37;                           % Number of Base Stations
-
-[X , Y] = baseStationPosition(radius);   
   
 hold on
 plot(X,Y,'b.');                         % BS center

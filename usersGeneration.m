@@ -59,7 +59,7 @@ Users(:,1)= 1:nUsers;
 usersPositionX(index)=[];                                   %scarto utenti con index(i)=1
 usersPositionY(index)=[];
 
-plot(usersPositionX,usersPositionY,'o');
+%plot(usersPositionX,usersPositionY,'o');
 
 
 

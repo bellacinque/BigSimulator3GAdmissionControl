@@ -134,7 +134,7 @@ end
      %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
      Interferers = find(Users(:,7)==1);
      Itot= sum(Pr_withShAllUsers(Interferers,j));
-     count=0;
+     count=0;                                   %?!?!?!
      for k=1:length(UsersCell(:,1))
          %%Calcolo C/I utente
          Users(UsersCell(k,1),8) = Users(UsersCell(k,1),6)/(Itot-Users(UsersCell(k,1),6));

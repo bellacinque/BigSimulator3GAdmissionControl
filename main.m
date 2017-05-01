@@ -10,26 +10,30 @@ clc          % Clear the command window
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%variables
 radius  = 35;                          % Cell Radius 
+nCycles = 50;
 
+nUsersTotRif     = 0;
+AdmittedUsersTot = 0;
 
-layout;
-usersGeneration;
-PowerCalculations;
-admissionControl;
+baseStationGeneration;
+%layout;                               % Plot layout
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%KPIs
-
-%Calcolo utenti ammessi
-AdmittedUsers = sum(Users(:,7));
-%Percentuale di utenti ammessi
-Percentage = AdmittedUsers/nUsers;
-
-fprintf('%s%d\n%s%f\n','Utenti ammessi totali: ', AdmittedUsers,'Percentuale utenti totale: ', Percentage);
+for iterator=1:nCycles
     
-%KPI Base stations di riferimento
-ind = find(Users(:,2)<8);
-AdmittedUsers = sum(Users(ind,7));
+    usersGeneration; %plot(usersPositionX,usersPositionY,'o');
+    PowerCalculations;
+    admissionControl;
+    
+    KPIsCycle;
+    
+end
 
-Percentage = AdmittedUsers/length(ind);
-fprintf('%s%d\n%s%f\n','Utenti ammessi BS di riferimento: ', AdmittedUsers,'Percentuale utenti ammessi BS di riferimento: ', Percentage);
+BLRate = AdmittedUsersTot/nUsersTotRif;
+fprintf('%s%d\n%s%f\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot,'Percentuale UtentiTOT ammessi BS di riferimento: ', BLRate);
+
+%plot per vedere i valori di c/i
+%plot(Users(:,1),Users(:,8),'ob');
+
+
+
+
