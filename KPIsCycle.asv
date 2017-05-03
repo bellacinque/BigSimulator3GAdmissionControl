@@ -59,4 +59,4 @@ end
 
 admittedUsersRefCells = length(find(Users(:,2)<8 & Users(:,7)==1));
 network_load = admittedUsersRefCells/224; %network load where 224 = 32*7 = total number of Rus in the 7 cells
-%fprintf('\n%s%.0f%%\n','Network Load(Percentage) :',network_load*100);
+fprintf('\n%s%d\n','Network Load ',k,': ',rate_out(k));
