@@ -94,22 +94,23 @@ ind = find(Users(:,7)==0);
 %non ammessi
 UsersNotAd = Users(ind,:);
 for i=1:length(UsersNotAd(:,1))
-    [max,ind1] = sort((Pr_withShAllUsers(UsersNotAd(i,1),:)),'descend'); %%ordina potenze ricevute alla BS da utente  
+    [max,indBS] = sort((Pr_withShAllUsers(UsersNotAd(i,1),:)),'descend'); %%ordina potenze ricevute alla BS da utente  
     
     for j=1:4
-        if count(ind1(j))<32
+        if count(indBS(j))<32
         %%calcolo interferenza causata da utente k
-        Ptot = max(j) + Itot(ind1(j)) + Pnoise(ind1(j));                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
-        loadF = (Ctot(ind1(j))+max(j))/Ptot;
+        Ptot = max(j) + Itot(indBS(j)) + Pnoise(indBS(j));                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
+        loadF = (Ctot(indBS(j))+max(j))/Ptot;
         deltaI = max(j)/(1-loadF);
         %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
         Interferers = find(Users(:,7)==1);
-        Itot(ind1(j)) = sum(Pr_withShAllUsers(Interferers,ind1(j)));
+        Itot(indBS(j)) = sum(Pr_withShAllUsers(Interferers,indBS(j)));
         
-        if Itot(ind1(j))+deltaI < Imax
-         Users(UsersNotAd(i,1),7) = 1;      %user k is admitted
-         Pnoise(ind1(j))=Pnoise(ind1(j)) + Pn;
-         count(ind1(j))=count(ind1(j))+1;
+        if Itot(indBS(j))+deltaI < Imax
+         Users(UsersNotAd(i,1),7) = 1;      % utente k ammesso
+         Users(UsersNotAd(i,1),2) = indBS(j);  % utente accampato alla nuova BS
+         Pnoise(indBS(j))=Pnoise(indBS(j)) + Pn;
+         count(indBS(j))=count(indBS(j))+1;
          break;
          end
         end
