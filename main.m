@@ -10,7 +10,7 @@ clc          % Clear the command window
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%variables
 radius  = 35;                          % Cell Radius 
-nCycles = 50;
+nCycles = 1000;
 
 nUsersTotRif     = 0;
 AdmittedUsersTot = 0;

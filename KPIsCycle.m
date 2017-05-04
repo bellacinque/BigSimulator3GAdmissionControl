@@ -23,7 +23,7 @@ AdmittedUsersTot = AdmittedUsersTot + AdmittedUsers;
 
 %%Computation of the Outage Rate for 3G system considering the number of
 %%reference BTSs
-%%N° of outage events/N° of Admitted Users (for each BTS)
+%%N? of outage events/N? of Admitted Users (for each BTS)
 %%Outage event <-> C/I < C/I*(for each BTS)
 
 rate_out = zeros(1,7); %% vector containing the outage rates for the reference cells
@@ -49,9 +49,9 @@ rate_out(j) = eventsCount/length(bsRows);
 
 end
 
-%for k=1:length(rate_out)
-   % fprintf('\n%s%d%s%d\n','Outage Rate for cell ',k,': ',rate_out(k));
-%end
+% for k=1:length(rate_out)
+%     fprintf('\n%s%d%s%d\n','Outage Rate for cell ',k,': ',rate_out(k));
+% end
 
 %%%%%%%%
 %Network Load = Number of users admitted in the 7 reference cells/number of
