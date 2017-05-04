@@ -31,9 +31,9 @@ Pr_shadowing_dB = Pr_mean_dB + std_Dev_dB.*randn(length(Users(:,3)),1);
 
 %%Potenza trasmessa dall'utente dopo Power Control 
 Pro = 10^(-13);         %Potenza ricevuta fissata (appena sopra Rx sensitivity, in modo da ricevere correttamente)
-Users(:,5) = Pro.*PL;
-
-%% Limite potenza trasmessa minima 
+%Users(:,5) = Pro.*PL;   
+Users(:,5) = Pro.*sqrt(PL);      % Half compensation PC
+%Limite potenza trasmessa minima 
 index = find(Users(:,5)<(10^-4));
 Users(index,5)=(10^-4);
 
