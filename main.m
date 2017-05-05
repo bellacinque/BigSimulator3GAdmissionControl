@@ -28,11 +28,11 @@ for iterator=1:nCycles
 end
 
 AdmissionPerc = 100*AdmittedUsersTot/nUsersTotRif;
-fprintf('%s%d\n%s%f\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot,'Percentuale UtentiTOT ammessi BS di riferimento: ', AdmissionPerc);
+fprintf('%s%d\n%s%f%%\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot,'Percentuale UtentiTOT ammessi BS di riferimento: ', AdmissionPerc);
 OutageRateTot  = eventsCountTot/AdmittedUsersTot;
 NetworkLoadTot = AdmittedUsersTot/(32*7*nCycles);
-fprintf('%s%d\n','Outage Rate related to reference cells over all cycles: ', OutageRateTot);
-fprintf('\n%s%.0f%%\n','Network Load related to reference cells over all cycles: ',NetworkLoadTot);
+fprintf('%s%f%%\n','Outage Rate related to reference cells over all cycles: ', 100-100*OutageRateTot);
+fprintf('\n%s%f%%\n','Network Load related to reference cells over all cycles: ',NetworkLoadTot*100);
 %plot per vedere i valori di c/i
 %plot(Users(:,1),Users(:,8),'ob');
 
