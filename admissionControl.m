@@ -14,7 +14,7 @@
  for i=1:nBs
      %Selezione utenti accampati in BS i
      ind = find(Users(:,2)==v(i));
-     UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS i
+     UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS v(i)
      Users(UsersCell(1,1),7) = 1;        %primo utente sempre ammesso
      %Potenza ricevuta da utenti ammessi nella BS i
      Ctot(v(i),1) = UsersCell(1,6); 
@@ -43,7 +43,7 @@
             end
          end
      end 
- end
+  end
 
 %%     
 %Secondo ciclo: intererferenza iniziale uguale all'interferenza di tutti
@@ -51,6 +51,7 @@
     v = randperm(nBs);     %Vettore permuta indici BS  
     Ctot = zeros(37,1);    %Potenza ricevuta utenti ammessi BS 
     count = zeros(37,1);
+    Pnoise = zeros(37,1);
     
     for i=1:37
      %Selction of rows correspondent to BS i
@@ -90,8 +91,6 @@
 %%%%Directed retry
 
 ind = find(Users(:,7)==0);
-%Utilizzo UsersCell ma non sono gli utenti della cella, bens? gli utenti
-%non ammessi
 UsersNotAd = Users(ind,:);
 for i=1:length(UsersNotAd(:,1))
     [max,indBS] = sort((Pr_withShAllUsers(UsersNotAd(i,1),:)),'descend'); %%ordina potenze ricevute alla BS da utente  

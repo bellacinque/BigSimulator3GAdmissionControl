@@ -53,6 +53,7 @@ fprintf('%s%d\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot);
 fprintf('%s%f%%\n','Percentuale UtentiTOT ammessi BS di riferimento: ', AdmissionPerc);
 fprintf('%s%f%%\n','Network Load related to reference cells over all cycles: ',NetworkLoadTot*100);
 fprintf('%s%f%%\n','Outage Rate related to reference cells over all cycles: ', OutageRateTot*100);
+
 %plot per vedere i valori di c/i
 %plot(Users(:,1),Users(:,8),'ob');
 
