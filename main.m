@@ -40,11 +40,11 @@ for iterator=1:nCycles
 end
 
 AdmissionPerc = 100*AdmittedUsersTot/nUsersTotRif;
-fprintf('%s%d\n%s%f%%\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot,'Percentuale UtentiTOT ammessi BS di riferimento: ', AdmissionPerc);
+fprintf('%s\n%s%d\n%s%f%%\n','(KPIs related to reference cells)','Admitted users: ', AdmittedUsersTot,'Percentage of admitted users: ', AdmissionPerc);
 OutageRateTot  = eventsCountTot/AdmittedUsersTot;
 NetworkLoadTot = AdmittedUsersTot/(31*7*nCycles);
-fprintf('%s%f%%\n','Outage Rate related to reference cells over all cycles: ', OutageRateTot*100);
- fprintf('%s%f%%\n','Network Load related to reference cells over all cycles: ',NetworkLoadTot*100);
+fprintf('%s%f%%\n','Outage Rate: ', OutageRateTot*100);
+fprintf('%s%f%%\n','Network Load: ',NetworkLoadTot*100);
 %plot per vedere i valori di c/i
 %plot(Users(:,1),Users(:,8),'ob');
 
@@ -53,7 +53,6 @@ fprintf('%s%f%%\n','Outage Rate related to reference cells over all cycles: ', O
 % filename = 'KPIpotMinNotLimited.txt';
 % fid = fopen(filename,'at');
 % fprintf(fid,'%d\t%f\t%f\t%f\n', Imax, AdmissionPerc ,OutageRateTot*100, NetworkLoadTot*100);
-
-fclose(fid);
+% fclose(fid);
 
 
