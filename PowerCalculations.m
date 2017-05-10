@@ -54,7 +54,7 @@ end
 Pr_mean_allUsers = x./PL_allUsers;               
 % Pr_allUsers = Users(:,5)./PL_allUsers; 
 
-%% Considering shadowing I don't take Power Control (that counteracts it)
+% Considering shadowing I don't take Power Control (that counteracts it)
 
 Pr_mean_allUsers_dB = 10*log10(Pr_mean_allUsers);
 

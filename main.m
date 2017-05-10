@@ -9,8 +9,20 @@ clc          % Clear the command window
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%variables
-radius  = 35;                          % Cell Radius 
-nCycles = 1000;
+nCycles = 100;
+areaErl = 100;                   % 1 Erlang ogni areaErl metri quadri
+radius = sqrt((31 * areaErl)/pi);   % Cell radius (calcolo raggio dalla densit?)
+Imax = 10^(-12);
+
+% % Cicli densit? utenti variabile
+% for areaErl=100:200:2000
+%    radius = sqrt((31 * areaErl)/pi);   % Cell radius (calcolo raggio dalla densit?)
+
+
+% % Cicli Interferenza di soglia
+% Interferenze = [5*10^(-13),10^(-12) , 5*10^(-12), 10^(-11), 5*10^(-11)];
+% for j=1:length(Interferenze)   
+%     Imax = Interferenze(j);
 
 nUsersTotRif     = 0;
 AdmittedUsersTot = 0;
@@ -30,12 +42,18 @@ end
 AdmissionPerc = 100*AdmittedUsersTot/nUsersTotRif;
 fprintf('%s%d\n%s%f%%\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot,'Percentuale UtentiTOT ammessi BS di riferimento: ', AdmissionPerc);
 OutageRateTot  = eventsCountTot/AdmittedUsersTot;
-NetworkLoadTot = AdmittedUsersTot/(32*7*nCycles);
-fprintf('%s%f%%\n','Outage Rate related to reference cells over all cycles: ', 100-100*OutageRateTot);
-fprintf('\n%s%f%%\n','Network Load related to reference cells over all cycles: ',NetworkLoadTot*100);
+NetworkLoadTot = AdmittedUsersTot/(31*7*nCycles);
+fprintf('%s%f%%\n','Outage Rate related to reference cells over all cycles: ', OutageRateTot*100);
+ fprintf('%s%f%%\n','Network Load related to reference cells over all cycles: ',NetworkLoadTot*100);
 %plot per vedere i valori di c/i
 %plot(Users(:,1),Users(:,8),'ob');
 
+% Print to file
+% Remove the comments to print in an output file
+% filename = 'KPIpotMinNotLimited.txt';
+% fid = fopen(filename,'at');
+% fprintf(fid,'%d\t%f\t%f\t%f\n', Imax, AdmissionPerc ,OutageRateTot*100, NetworkLoadTot*100);
 
+fclose(fid);
 
 

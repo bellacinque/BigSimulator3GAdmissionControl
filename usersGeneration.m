@@ -9,7 +9,7 @@ areaCircle = pi*radius^2;                                   %area cerchio circos
 areaPlus= (areaCircle-areaHex)/3;
 areaTot = nBs*(areaHex+areaPlus);                           %area totate esagoni + area esterna
 
-nUsers = round(areaTot/100);                                %n.utenti fissata la densit?
+nUsers = round(areaTot/areaErl);                                %n.utenti fissata la densit?
 %nUsers = round((meanUsers*nBs)*areaQ/areaTot);  %numero di users da generare per avere 32users di media all'interno degli esagoni
 
 % generazione su un quadrato

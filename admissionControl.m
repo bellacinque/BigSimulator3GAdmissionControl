@@ -5,7 +5,7 @@
 %             degli utenti ammessi alla rete nel ciclo 1
 
 %Interferenza massima 
-Imax = 5*10^(-10);
+% Imax = 5*10^(-10);
 %%
 %Primo ciclo di admission control: interferenza inziale zero
  Itot = zeros(37,1);    
@@ -28,7 +28,7 @@ Imax = 5*10^(-10);
      
      count=0;
      for k=2:length(UsersCell(:,1))
-         if count<32
+         if count<31
          %%calcolo interferenza causata da utente k
           Ptot = UsersCell(k,6) + Itot(v(i)) + Pnoise;                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
           loadF = (UsersCell(k,6)+Ctot(v(i),1))/Ptot;
@@ -66,7 +66,7 @@ Imax = 5*10^(-10);
      Pnoise(v(i))=2*Pn;
      
      for k=1:length(UsersCell(:,1))
-         if count(v(i))<32
+         if count(v(i))<31
          %%calcolo interferenza causata da utente k
           Ptot = UsersCell(k,6) + Itot(v(i)) + Pnoise(v(i));                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
           loadF = (UsersCell(k,6)+Ctot(v(i)))/Ptot;
@@ -132,7 +132,7 @@ end
      Itot= sum(Pr_withShAllUsers(Interferers,j));
      for k=1:length(UsersCell(:,1))
          %%Calcolo C/I utente
-         Users(UsersCell(k,1),8) = Users(UsersCell(k,1),6)/(Itot-Users(UsersCell(k,1),6));
+         Users(UsersCell(k,1),8) = abs(Users(UsersCell(k,1),6)/(Itot-Users(UsersCell(k,1),6)));
      end
   end
    
