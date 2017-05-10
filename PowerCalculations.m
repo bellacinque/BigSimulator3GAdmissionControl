@@ -12,22 +12,16 @@ f =  2000;     %frequency in MHz
 %%Path Loss from Okumura Hata formula
 PL_dB =  46.33 + (44.9-(6.55*log10(h1)))*log10(Users(:,3)/1000) + 33.9*log10(f) - 13.82*log10(h1);
 PL = 10.^(PL_dB/10);
+
 %%Received Power at first request
 Users(:,4) = Ptmax./PL;                   
 
-%%Considering Shadowing with standard deviation between 6 dB and 10 dB in
-%%urban environment.
-
+%%Considering Shadowing with standard deviation between 6 dB and 10 dB in urban environment.
 Pr_mean_dB = 10*log10(Users(:,4)); 
-
 std_Dev_dB = 8;
 
-%%Generate values from a normal distribution with mean Pr_mean_dB
-        %%and standard deviation std_Dev_dB (for .
-
 %% Shadowing considers the distance of user with respect to their BS
-Pr_shadowing_dB = Pr_mean_dB + std_Dev_dB.*randn(length(Users(:,3)),1); 
-
+Pr_shadowing_dB = Pr_mean_dB + std_Dev_dB.*randn(nUsers,1); 
 
 %%Potenza trasmessa dall'utente dopo Power Control 
 Pro = 10^(-13);         %Potenza ricevuta fissata (appena sopra Rx sensitivity, in modo da ricevere correttamente)
@@ -47,7 +41,7 @@ Users(:,6)= Users(:,5)./PL;                     %% ?! = Pro
 PL_dB_allUsers =  46.33 + (44.9-(6.55*log10(h1)))*log10(D/1000) + 33.9*log10(f) - 13.82*log10(h1);
 PL_allUsers = 10.^(PL_dB_allUsers/10);
 
-   x = zeros(length(D), 37);
+   x = zeros(nUsers, 37);
 for i=1:37
    x(:,i) = Users(:,5);
 end

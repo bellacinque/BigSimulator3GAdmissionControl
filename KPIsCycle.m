@@ -1,23 +1,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%KPIs cycle
-
-%Calcolo utenti ammessi
-%AdmittedUsers = sum(Users(:,7));
-%Percentuale di utenti ammessi
-%Percentage = AdmittedUsers/nUsers;
-
-%fprintf('%s%d\n%s%d\n%s%f\n','Cycle ',nCycles,'Utenti ammessi totali: ', AdmittedUsers,'Percentuale utenti totale: ', Percentage);
-    
+  
 %KPI Base stations di riferimento
-ind = find(Users(:,2)<8);
+ind = find(Users(:,2)<8);                   % find tutti gli utenti nelle base station di riferimento
 nUsersRif = length(ind);
 AdmittedUsers = sum(Users(ind,7));
-
-%Percentage = AdmittedUsers/length(ind);
-%fprintf('%s%d\n%s%d\n%s%f\n','Cycle ',iterator,'Utenti ammessi BS di riferimento: ', AdmittedUsers,'Percentuale utenti ammessi BS di riferimento: ', Percentage);
+out_events = find(Users(:,2)<8 &  Users(:,8)<0.19 & Users(:,7)==1); %vector with users of 7 cells in outage condition(C/I <C/I*)
 
 nUsersTotRif = nUsersTotRif + nUsersRif;
 AdmittedUsersTot = AdmittedUsersTot + AdmittedUsers;
+eventsCountTot = eventsCountTot + length(out_events);
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -58,8 +53,7 @@ AdmittedUsersTot = AdmittedUsersTot + AdmittedUsers;
 %eventsCountTot = number of outage events over all the cycles for the 7
 %cells
 
-out_events = find(Users(:,2)<8 & Users(:,8)<0.19 & Users(:,7)==1); %vector with users of 7 cells in outage condition(C/I <C/I*)
-eventsCountTot = eventsCountTot + length(out_events);
+
 %%%%%%%%
 %Network Load = Number of users admitted in the 7 reference cells/number of
 %RU in the 7 cells for a cycle
