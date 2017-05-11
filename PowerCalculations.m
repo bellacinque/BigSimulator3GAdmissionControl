@@ -23,17 +23,25 @@ std_Dev_dB = 8;
 %% Shadowing considers the distance of user with respect to their BS
 Pr_shadowing_dB = Pr_mean_dB + std_Dev_dB.*randn(nUsers,1); 
 
-%%Potenza trasmessa dall'utente dopo Power Control 
+%%
+%% Potenza trasmessa dall'utente dopo Power Control
 Pro = 10^(-13);         %Potenza ricevuta fissata (appena sopra Rx sensitivity, in modo da ricevere correttamente)
 %Users(:,5) = Pro.*PL;   
 Users(:,5) = Pro.*sqrt(PL);      % Half compensation PC
-%Limite potenza trasmessa minima 
-index = find(Users(:,5)<(10^-4));
+%Limite potenza trasmessa minima e massima
+index = Users(:,5)<(10^-4);
 Users(index,5)=(10^-4);
-
-%%Potenza ricevuta dalla BS dopo PC 
-Users(:,6)= Users(:,5)./PL;                     %% ?! = Pro  
+index = find(Users(:,5)>2);
+Users(index,5)= 2;
+%% Potenza ricevuta dalla BS dopo PC 
+%Users(:,6)= Users(:,5)./PL;                     %% ?! = Pro  
   
+Prm_dB = 10*log10(Users(:,5)./PL); 
+std_Dev_dB = 8;
+Prshad_dB = Prm_dB + std_Dev_dB.*randn(nUsers,1);
+
+Users(:,6) = 10.^(Prshad_dB/10);
+
 %% Potenza ricevuta da tutti gli utenti
 % matrice avente in (x,y) la potenza ricevuta dall'utente x alla BS y
 

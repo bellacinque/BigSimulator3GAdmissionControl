@@ -13,7 +13,7 @@ nCycles = 100;
 areaErl = 100;                                  % 1 Erlang ogni areaErl metri quadri
 radius = round(sqrt((31 * areaErl * 2)/(3 * sqrt(3))));
 %radius = 20;
-Imax = 10^(-10);
+Imax = 10^(-12);
 
 % % Cicli densit? utenti variabile
 % for areaErl=100:200:2000
@@ -47,12 +47,12 @@ end
 AdmissionPerc = 100*AdmittedUsersTot/nUsersTotRif;
 OutageRateTot  = eventsCountTot/AdmittedUsersTot;
 NetworkLoadTot = AdmittedUsersTot/(31*7*nCycles);
-
-fprintf('%s%d\n','Average utenti presenti in ogni BS di riferimento: ', round(nUsersTotRif/7));
-fprintf('%s%d\n','UtentiTOT ammessi BS di riferimento: ', AdmittedUsersTot);
-fprintf('%s%f%%\n','Percentuale UtentiTOT ammessi BS di riferimento: ', AdmissionPerc);
-fprintf('%s%f%%\n','Network Load related to reference cells over all cycles: ',NetworkLoadTot*100);
-fprintf('%s%f%%\n','Outage Rate related to reference cells over all cycles: ', OutageRateTot*100);
+fprintf('%s\n', '(KPIs in reference cells, over all cycles)');
+%fprintf('%s%d\n','Average users: ', round(nUsersTotRif/7));
+fprintf('%s%d\n','Total admitted users: ', AdmittedUsersTot);
+fprintf('%s%f%%\n','Percentage admitted users: ', AdmissionPerc);
+fprintf('%s%f%%\n','Network Load: ',NetworkLoadTot*100);
+fprintf('%s%f%%\n','Outage Rate: ', OutageRateTot*100);
 
 %plot per vedere i valori di c/i
 %plot(Users(:,1),Users(:,8),'ob');
