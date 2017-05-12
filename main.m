@@ -9,10 +9,10 @@ clc          % Clear the command window
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%variables
-nCycles = 100;
+nCycles = 1;
 areaErl = 100;                                  % 1 Erlang ogni areaErl metri quadri
 radius = round(sqrt((31 * areaErl * 2)/(3 * sqrt(3))));
-%radius = 20;
+%radius = 100;
 Imax = 10^(-12);
 
 % % Cicli densit? utenti variabile
@@ -48,7 +48,7 @@ AdmissionPerc = 100*AdmittedUsersTot/nUsersTotRif;
 OutageRateTot  = eventsCountTot/AdmittedUsersTot;
 NetworkLoadTot = AdmittedUsersTot/(31*7*nCycles);
 fprintf('%s\n', '(KPIs in reference cells, over all cycles)');
-%fprintf('%s%d\n','Average users: ', round(nUsersTotRif/7));
+fprintf('%s%d\n','Average users: ', round(nUsersTotRif/7));
 fprintf('%s%d\n','Total admitted users: ', AdmittedUsersTot);
 fprintf('%s%f%%\n','Percentage admitted users: ', AdmissionPerc);
 fprintf('%s%f%%\n','Network Load: ',NetworkLoadTot*100);
