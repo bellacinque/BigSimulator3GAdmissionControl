@@ -12,8 +12,8 @@ clc          % Clear the command window
 nCycles = 1;
 areaErl = 100;                                  % 1 Erlang ogni areaErl metri quadri
 radius = round(sqrt((31 * areaErl * 2)/(3 * sqrt(3))));
-%radius = 100;
-Imax = 10^(-12);
+%radius = 20;
+Imax = 10^(-12);                                %Interferenza massima 
 
 % % Cicli densit? utenti variabile
 % for areaErl=100:200:2000

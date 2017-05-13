@@ -25,6 +25,7 @@ for i=1:nBs
     Interferers = find(Users(:,7)==1); 
     if (~isempty(Interferers))
         Itot(v(i)) = sum(Pr_withShAllUsers(Interferers,v(i)));
+        %Itot(v(i)) = Itot(v(i)) + UsersCell(1,6);
     else
         Itot(v(i)) = 0;
     end
@@ -61,15 +62,15 @@ end
 %%     
 %Secondo ciclo: intererferenza iniziale uguale all'interferenza di tutti gli utenti ammessi alla rete nel ciclo 1
     
-v = randperm(nBs);                                %Vettore permuta indici BS  
+v = randperm(nBs);     %Vettore permuta indici BS  
 for i=1:nBs
     %Selction of rows correspondent to BS v(i)
     ind = find(Users(:,2)==v(i)); 
-    UsersCell= Users(ind, :);                     %Matrice degli utenti accampati in BS i
+    UsersCell= Users(ind, :);           %Matrice degli utenti accampati in BS i
   
     %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
     Interferers = find(Users(:,7)==1);
-    Itot(v(i))= sum(Pr_withShAllUsers(Interferers,v(i)));      
+    Itot(v(i))= sum(Pr_withShAllUsers(Interferers,v(i)));     %domanda: ma Itot(v(i)) non è (sum di Itot)?  
     
     for k=1:length(ind)
         if count(v(i))<31
@@ -84,7 +85,7 @@ for i=1:nBs
             deltaI = UsersCell(k,6)/(1-loadF);
             if Itot(v(i))+deltaI < Imax
                 %user k is admitted
-                if Users(UsersCell(k,1),7)==0   	% se non era ammesso nel ciclo 1 aumento gli indicatori
+                if Users(UsersCell(k,1),7)==0    % se non era ammesso nel ciclo 1 aumento gli indicatori
                     Users(UsersCell(k,1),7) = 1;
                     Itot(v(i))=Itot(v(i))+ UsersCell(k,6);
                     %Ctot(v(i)) = Ctot(v(i)) + UsersCell(k,6);
@@ -93,7 +94,7 @@ for i=1:nBs
                 end
             else
                 % user k is non admitted
-                if Users(UsersCell(k,1),7)==1       % se era stato ammesso nel ciclo 1 decremento gli indicatori
+                if Users(UsersCell(k,1),7)==1   % se era stato ammesso nel ciclo 1 decremento gli indicatori
                     Users(UsersCell(k,1),7)= 0;
                     Itot(v(i)) = Itot(v(i)) - UsersCell(k,6);
                     Ctot(v(i)) = Ctot(v(i)) - UsersCell(k,6);

@@ -20,8 +20,8 @@ Users(:,4) = 10.^(Pr_shadowing_dB/10);
 Pro = 10^(-13);         %Potenza ricevuta fissata (appena sopra Rx sensitivity, in modo da ricevere correttamente)
 Pro_dB = 10*log10(Pro);
 %Users(:,5) = Pro.*sqrt(PL);      % Half compensation PC
-PL_half=10*log(sqrt(PL));
-Pt_mean_dB = Pro_dB+PL_half+shadowing_dB;
+PL_half_dB=10*log(sqrt(PL));
+Pt_mean_dB = Pro_dB+PL_half_dB+shadowing_dB;
 Users(:,5) = 10.^(Pt_mean_dB/10);
 
 %% Limite potenza trasmessa minima e massima
@@ -32,7 +32,7 @@ Users(index,5)= 2;
 
 %% Potenza ricevuta dalla BS dopo PC  
 Pt_mean_dB = 10*log10(Users(:,5)); 
-Pr_mean_dB = Pt_mean_dB-PL_half-shadowing_dB;
+Pr_mean_dB = Pt_mean_dB-PL_half_dB-shadowing_dB;
 Users(:,6) = 10.^(Pr_mean_dB/10);
 
 %% Potenza ricevuta da tutti gli utenti  % non ha senso un nuovo shadowing per le potenze già calcolate in precedenza: come risolvere?? mbo 
