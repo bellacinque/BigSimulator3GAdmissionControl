@@ -25,16 +25,23 @@ for i=1:nBs
     Interferers = find(Users(:,7)==1); 
     if (~isempty(Interferers))
         Itot(v(i)) = sum(Pr_withShAllUsers(Interferers,v(i)));
+        Ctot(v(i)) = 0;
+        Pnoise(v(i)) = 0;
+        loadF = 0;
+        n=1;
     else
         Itot(v(i)) = 0;
+        Users(UsersCell(1,1),7) = 1;        %primo utente sempre ammesso
+        Ctot(v(i)) = UsersCell(1,6);
+        Pnoise(v(i)) = Pn;
+        Ptot = UsersCell(1,6) + Itot(v(i)) + Pnoise(v(i));
+        loadF = UsersCell(1,6)/Ptot;
+        n=2;
     end
     
-    %Potenza ricevuta da utenti ammessi nella BS v(i)
-    Ctot(v(i)) = 0;
-    Pnoise(v(i)) = 0;
-    loadF = 0;
+    
     count(v(i))=0;
-    for k=1:length(ind)
+    for k=n:length(ind)
         if count(v(i))<31
             %%calcolo interferenza causata da utente k
             Pnoise(v(i)) = Pnoise(v(i)) + Pn;
