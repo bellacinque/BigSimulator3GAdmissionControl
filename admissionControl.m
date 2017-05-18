@@ -26,7 +26,7 @@ for i=1:nBs
     if (~isempty(Interferers))
         Itot(v(i)) = sum(Pr_withShAllUsers(Interferers,v(i)));
         Ctot(v(i)) = 0;
-        Pnoise(v(i)) = 0;
+        Pnoise(v(i)) = Pn;
         loadF = 0;
         n=1;
     else
@@ -38,17 +38,11 @@ for i=1:nBs
         loadF = UsersCell(1,6)/Ptot;
         n=2;
     end
-    
-    
+
     count(v(i))=0;
     for k=n:length(ind)
         if count(v(i))<31
             %%calcolo interferenza causata da utente k
-            Pnoise(v(i)) = Pnoise(v(i)) + Pn;
-            Ptot = UsersCell(k,6) + Itot(v(i)) + Pnoise(v(i));   %Ptot= potenza ricevuta utente k + Itot + Pnoise
-            %loadF = (UsersCell(k,6)+Ctot(v(i),1))/Ptot;
-            loadFj = UsersCell(k,6)/Ptot;
-            loadF = loadF + loadFj;
             deltaI = UsersCell(k,6)/(1-loadF);
             if Itot(v(i))+deltaI < Imax
                 %user k is admitted
@@ -56,10 +50,10 @@ for i=1:nBs
                 Itot(v(i)) = Itot(v(i))+UsersCell(k,6);
                 Ctot(v(i)) = Ctot(v(i)) + UsersCell(k,6);
                 Pnoise(v(i)) = Pnoise(v(i)) + Pn;
+                Ptot = UsersCell(k,6) + Itot(v(i)) + Pnoise(v(i));
+                loadFj = UsersCell(k,6)/Ptot;
+                loadF = loadF + loadFj;
                 count(v(i)) = count(v(i))+1;
-            else 
-                Pnoise(v(i)) = Pnoise(v(i)) - Pn;
-                loadF = loadF - loadFj;
             end
         end
     end
