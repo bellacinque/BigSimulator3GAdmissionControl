@@ -5,7 +5,7 @@
 ind = find(Users(:,2)<8);                   % find tutti gli utenti nelle base station di riferimento
 nUsersRif = length(ind);
 AdmittedUsers = sum(Users(ind,7));
-out_events = find(Users(:,2)<8 &  Users(:,8)<0.19 & Users(:,7)==1); %vector with users of 7 cells in outage condition(C/I <C/I*)
+out_events = find(Users(:,2)<8 &  Users(:,8)<CImin & Users(:,7)==1); %vector with users of 7 cells in outage condition(C/I <C/I*)
 
 nUsersTotRif = nUsersTotRif + nUsersRif;
 AdmittedUsersTot = AdmittedUsersTot + AdmittedUsers;
