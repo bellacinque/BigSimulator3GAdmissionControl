@@ -1,7 +1,7 @@
 %% Calcolo potenze
 
 %%Potenza ricevuta dalla BS dalla richiesta di ammissione alla rete (Pt max = 2W)
-Ptmax = 2;
+Ptmax = 2;     
 h1 = 30;       %height of BS
 f =  2000;     %frequency in MHz
 std_Dev_dB = 8;%standard deviation between 6 dB and 10 dB in urban environment
