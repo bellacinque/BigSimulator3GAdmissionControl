@@ -19,14 +19,19 @@ Users(:,4) = 10.^(Pr_shadowing_dB/10);
 %% Potenza trasmessa dall'utente dopo Power Control
 Pro = 10^(-13);         %Potenza ricevuta fissata (appena sopra Rx sensitivity, in modo da ricevere correttamente)
 Pro_dB = 10*log10(Pro);
-%Users(:,5) = Pro.*sqrt(PL);      % Half compensation PC
-PL_half_dB = 10*log(sqrt(PL));
-Pt_dB = Pro_dB + PL_half_dB - shadowing_dB;
+
+% Half compensation PC
+% PL_half_dB = 10*log(sqrt(PL));
+% Pt_dB = Pro_dB + PL_half_dB - shadowing_dB;
+
+%%full compensation PC
+ Pt_dB = Pro_dB + PL_dB - shadowing_dB;
+
 Users(:,5) = 10.^(Pt_dB/10);
 
 %% Limite potenza trasmessa minima e massima
-%index = Users(:,5)<(4*10^-8);
-%Users(index,5)=(4*10^-8);
+index = Users(:,5)<(4*10^-8);
+Users(index,5)=(4*10^-8);
 index = find(Users(:,5)>2);
 Users(index,5)= 2;
 

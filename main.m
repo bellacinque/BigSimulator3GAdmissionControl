@@ -9,12 +9,12 @@ clc          % Clear the command window
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%variables
-nCycles = 1;
+nCycles = 1000;
 areaErl = 100;                                          % 1 Erlang ogni areaErl metri quadri
-radius = round(sqrt((28 * areaErl * 2)/(3 * sqrt(3)))); %calcolo raggio in base alla densità
+radius = round(sqrt((10 * areaErl * 2)/(3 * sqrt(3)))); %calcolo raggio in base alla densità
 %radius = 100;
-Imax = 5*10^(-14);                                       %Interferenza massima 
-CImin = 0.03;
+%Imax = 5*10^(-13);                                       %Interferenza massima [W] 
+CImin = 0.05;
 
 % % Cicli densit? utenti variabile
 % for areaErl=100:200:2000
@@ -23,8 +23,8 @@ CImin = 0.03;
 
 % % Cicli Interferenza di soglia
 % Interferenze = [5*10^(-13),10^(-12) , 5*10^(-12), 10^(-11), 5*10^(-11)];
-% for j=1:length(Interferenze)   
-%     Imax = Interferenze(j);
+ for x=1:5:50 
+     Imax = x*10^-13;
 
 
 nUsersTotRif     = 0;
@@ -47,9 +47,10 @@ end
 
 AdmissionPerc = 100*AdmittedUsersTot/nUsersTotRif;
 OutageRateTot  = eventsCountTot/AdmittedUsersTot;
-NetworkLoadTot = AdmittedUsersTot/(31*7*nCycles);
+NetworkLoadTot = AdmittedUsersTot/(32*7*nCycles);
+AvgUsersCell = round(nUsersTotRif/7/nCycles);
 fprintf('%s\n', '(KPIs in reference cells, over all cycles)');
-fprintf('%s%d\n','Average users: ', round(nUsersTotRif/7));
+fprintf('%s%d\n','Average users per cell: ', AvgUsersCell);
 fprintf('%s%d\n','Total admitted users: ', AdmittedUsersTot);
 fprintf('%s%f%%\n','Percentage admitted users: ', AdmissionPerc);
 fprintf('%s%f%%\n','Network Load: ',NetworkLoadTot*100);
@@ -60,9 +61,9 @@ fprintf('%s%f%%\n','Outage Rate: ', OutageRateTot*100);
 
 % Print to file
 % Remove the comments to print in an output file
-% filename = 'KPIpotMinNotLimited.txt';
-% fid = fopen(filename,'at');
-% fprintf(fid,'%d\t%f\t%f\t%f\n', Imax, AdmissionPerc ,OutageRateTot*100, NetworkLoadTot*100);
-% fclose(fid);
-
+filename = 'KPIptMinLimited_10users_noDirectedRetry.txt';
+fid = fopen(filename,'at');
+fprintf(fid,'%d\t%f\t%f\t%f\t%d\t%d\t\n', Imax, AdmissionPerc ,OutageRateTot*100, NetworkLoadTot*100, AvgUsersCell, radius);
+fclose(fid);
+ end
 
