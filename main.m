@@ -11,10 +11,10 @@ clc          % Clear the command window
 %%variables
 nCycles = 1;
 areaErl = 100;                                          % 1 Erlang ogni areaErl metri quadri
-radius = round(sqrt((31 * areaErl * 2)/(3 * sqrt(3)))); %calcolo raggio in base alla densità
+radius = round(sqrt((28 * areaErl * 2)/(3 * sqrt(3)))); %calcolo raggio in base alla densità
 %radius = 100;
-Imax = 5*10^(-5);                                       %Interferenza massima 
-CImin = 0.05;
+Imax = 5*10^(-14);                                       %Interferenza massima 
+CImin = 0.03;
 
 % % Cicli densit? utenti variabile
 % for areaErl=100:200:2000

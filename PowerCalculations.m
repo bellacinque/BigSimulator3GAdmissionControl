@@ -4,7 +4,7 @@
 Ptmax = 2;     
 h1 = 30;       %height of BS
 f =  2000;     %frequency in MHz
-std_Dev_dB = 8;%standard deviation between 6 dB and 10 dB in urban environment
+std_Dev_dB = 6;%standard deviation between 6 dB and 10 dB in urban environment
 
 %%Path Loss from Okumura Hata formula
 PL_dB =  46.33 + (44.9-(6.55*log10(h1)))*log10(Users(:,3)/1000) + 33.9*log10(f) - 13.82*log10(h1);
@@ -20,20 +20,20 @@ Users(:,4) = 10.^(Pr_shadowing_dB/10);
 Pro = 10^(-13);         %Potenza ricevuta fissata (appena sopra Rx sensitivity, in modo da ricevere correttamente)
 Pro_dB = 10*log10(Pro);
 %Users(:,5) = Pro.*sqrt(PL);      % Half compensation PC
-PL_half_dB=10*log(sqrt(PL));
-Pt_mean_dB = Pro_dB+PL_half_dB+shadowing_dB;
-Users(:,5) = 10.^(Pt_mean_dB/10);
+PL_half_dB = 10*log(sqrt(PL));
+Pt_dB = Pro_dB + PL_half_dB - shadowing_dB;
+Users(:,5) = 10.^(Pt_dB/10);
 
 %% Limite potenza trasmessa minima e massima
-index = Users(:,5)<(10^-4);
-Users(index,5)=(10^-4);
+%index = Users(:,5)<(4*10^-8);
+%Users(index,5)=(4*10^-8);
 index = find(Users(:,5)>2);
 Users(index,5)= 2;
 
 %% Potenza ricevuta dalla BS dopo PC  
-Pt_mean_dB = 10*log10(Users(:,5)); 
-Pr_mean_dB = Pt_mean_dB-PL_half_dB-shadowing_dB;
-Users(:,6) = 10.^(Pr_mean_dB/10);
+Pt_dB = 10*log10(Users(:,5)); 
+Pr_dB = Pt_dB - PL_dB + shadowing_dB;
+Users(:,6) = 10.^(Pr_dB/10);
 
 %% Potenza ricevuta da tutti gli utenti  % non ha senso un nuovo shadowing per le potenze già calcolate in precedenza: come risolvere?? mbo 
                                          % forse da tenere presente in
@@ -44,19 +44,19 @@ Users(:,6) = 10.^(Pr_mean_dB/10);
 PL_dB_allUsers =  46.33 + (44.9-(6.55*log10(h1)))*log10(D/1000) + 33.9*log10(f) - 13.82*log10(h1);
 PL_allUsers = 10.^(PL_dB_allUsers/10);
 
-   x = zeros(nUsers, 37);
-for i=1:37
-   x(:,i) = Users(:,5);
-end
-Pr_mean_allUsers = x./PL_allUsers;               
-% Pr_allUsers = Users(:,5)./PL_allUsers; 
+    x = zeros(nUsers, 37);
+% for i=1:37
+%    x(:,i) = Users(:,5);
+% end
+% Pr_mean_allUsers = x./PL_allUsers;               
+Pr_mean_allUsers = Users(:,5)./PL_allUsers; 
 
 % Considering shadowing I don't take Power Control (that counteracts it)
 Pr_mean_allUsers_dB = 10*log10(Pr_mean_allUsers);
  for i=1:37
     x(:,i) = std_Dev_dB.*randn(nUsers,1); 
  end
-Pr_withShAllUsers_dB = Pr_mean_allUsers_dB - x;
+Pr_withShAllUsers_dB = Pr_mean_allUsers_dB + x;
 Pr_withShAllUsers = 10.^(Pr_withShAllUsers_dB/10);
 
 %%

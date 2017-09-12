@@ -143,13 +143,13 @@ end
 
 %%
 %%%Calcolo C/I di ogni utente, risultato in colonna 8 di "Users"
+      Interferers = find(Users(:,7)==1);
 
   for j=1:37
-     %Selction of rows correspondent to BS i
+     %Selction of rows correspondent to BS j
      ind = find(Users(:,2)==j);
      UsersCell = Users(ind, :);           %Matrice degli utenti accampati in BS i
-     %Calcolo interferenza ricevuta dagli utenti ammessi nelle altre BSs
-     Interferers = find(Users(:,7)==1);
+     %Calcolo interferenza ricevuta dagli utenti ammessi
      Itot1= sum(Pr_withShAllUsers(Interferers,j));
      for k=1:length(ind)
          %%Calcolo C/I utente
