@@ -11,49 +11,50 @@ clc          % Clear the command window
 
 %% variables
 nCycles = 1;
-nBs     = 37;                                           % Numero Base Stations
+nBs     = 37;                                           % Number of Base Stations
 areaErl = 500;                                          % 1 Erlang ogni areaErl metri quadri
-radius = round(sqrt((32 * areaErl * 2)/(3 * sqrt(3)))); % Calcolo raggio in base alla densità
+radius = round(sqrt((10 * areaErl * 2)/(3 * sqrt(3)))); %calcolo raggio in base alla densità
 %radius = 100;
-%Imax = 5*10^(-13);                                     % Interferenza massima [W] 
+%Imax = 5*10^(-13);                                       %Interferenza massima [W] 
 CImin = 0.05;
 
 %%
 % % Cicli densit? utenti variabile
 % for areaErl=100:200:2000
-%    radius = sqrt((31 * areaErl)/pi);                  % Cell radius (calcolo raggio dalla densit?)
+%    radius = sqrt((31 * areaErl)/pi);          % Cell radius (calcolo raggio dalla densit?)
 
 
 % % Cicli Interferenza di soglia
 % Interferenze = [5*10^(-13),10^(-12) , 5*10^(-12), 10^(-11), 5*10^(-11)];
 x=1;
 % for x=1:5:50 
-     Imax = x*10^-13;
+     Imax = x*10^-11;
      
 nUsersTotRif     = 0;
 AdmittedUsersTot = 0;
 eventsCountTot   = 0; %Initialization of outage events for outage rate computation
 
-[X,Y] = baseStationPosition(radius);                    % Base Station Position Generation
-%PlotLayout;                                            % Plot layout
+
+
+[X,Y] = baseStationPosition(radius);        % Base Station Position Generation
+%PlotLayout;                                    % Plot layout
 
 for iterator=1:nCycles
     
-    UsersGeneration; %plot(usersPositionX,usersPositionY,'o');
+    usersGeneration; %plot(usersPositionX,usersPositionY,'o');
     PowerCalculations;
-    AdmissionControl;
+    admissionControl;
     KPIsCycle;
     
 end
 
-%plot(usersPositionX,usersPositionY,'o');               %plot users ultimo ciclo
+%plot(usersPositionX,usersPositionY,'o');    %plot users ultimo ciclo
 
 AdmissionPerc = 100*AdmittedUsersTot/nUsersTotRif;
 OutageRateTot  = eventsCountTot/AdmittedUsersTot;
 NetworkLoadTot = AdmittedUsersTot/(32*7*nCycles);
 AvgUsersCell = round(nUsersTotRif/7/nCycles);
 fprintf('%s\n', '(KPIs in reference cells, over all cycles)');
-fprintf('%s%d\n','Total users: ', nUsersTotRif);
 fprintf('%s%d\n','Average users per cell: ', AvgUsersCell);
 fprintf('%s%d\n','Total admitted users: ', AdmittedUsersTot);
 fprintf('%s%f%%\n','Percentage admitted users: ', AdmissionPerc);
