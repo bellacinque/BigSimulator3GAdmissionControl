@@ -49,7 +49,7 @@ Users(:,6) = 10.^(Pr_dB/10);
 PL_dB_allUsers =  46.33 + (44.9-(6.55*log10(h1)))*log10(D/1000) + 33.9*log10(f) - 13.82*log10(h1);
 PL_allUsers = 10.^(PL_dB_allUsers/10);
 
-    x = zeros(nUsers, 37);
+    x = zeros(nUsers, nBs);
 % for i=1:37
 %    x(:,i) = Users(:,5);
 % end
@@ -58,8 +58,11 @@ Pr_mean_allUsers = Users(:,5)./PL_allUsers;
 
 % Considering shadowing I don't take Power Control (that counteracts it)
 Pr_mean_allUsers_dB = 10*log10(Pr_mean_allUsers);
- for i=1:37
-    x(:,i) = std_Dev_dB.*randn(nUsers,1); 
+ for i=1:nBs
+     x(:,i) = std_Dev_dB.*randn(nUsers,1); 
+ end
+ for i=1:nUsers
+     x(i,Users(i,2))=shadowing_dB(i);               %inserisco lo shadowing già calcolato per ogni utente
  end
 Pr_withShAllUsers_dB = Pr_mean_allUsers_dB + x;
 Pr_withShAllUsers = 10.^(Pr_withShAllUsers_dB/10);
