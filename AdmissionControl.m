@@ -30,18 +30,20 @@ for i=1:nBs
         loadF = 0;
         n=1;
     else
-        Users(UsersCell(1,1),7) = 1;        %primo utente sempre ammesso
-        Ctot(v(i)) = UsersCell(1,6);
-        Pnoise(v(i)) = Pn;
-        Ptot = UsersCell(1,6) + Itot(v(i)) + Pnoise(v(i));
-        Itot(v(i)) = UsersCell(1,6);
-        loadF = UsersCell(1,6)/Ptot;
-        n=2;
+        if(~isempty(UsersCell))
+            Users(UsersCell(1,1),7) = 1;        %primo utente sempre ammesso
+            Ctot(v(i)) = UsersCell(1,6);
+            Pnoise(v(i)) = Pn;
+            Ptot = UsersCell(1,6) + Itot(v(i)) + Pnoise(v(i));
+            Itot(v(i)) = UsersCell(1,6);
+            loadF = UsersCell(1,6)/Ptot;
+            n=2;
+        end
     end
 
     count(v(i))=0;
     for k=n:length(ind)
-        if count(v(i))<15
+        if count(v(i))<32
             %%calcolo interferenza causata da utente k
             deltaI = UsersCell(k,6)/(1-loadF);
             if Itot(v(i))+deltaI < Imax
@@ -75,7 +77,7 @@ for i=1:nBs
    end
     
     for k=1:length(ind)
-        if count(v(i))<15
+        if count(v(i))<32
             %%calcolo interferenza causata da utente k
             if Users(UsersCell(k,1),7)==0
                 Ptot = UsersCell(k,6) + Itot(v(i)) + Pnoise(v(i)) + Pn;
@@ -111,7 +113,7 @@ for i=1:nBs
     end
 end
     
-%
+
 %%Directed retry
 
 ind = find(Users(:,7)==0);
@@ -121,7 +123,7 @@ for i=1:length(UsersNotAd(:,1))
     
     for j=1:4
         if (indBS(j)~=UsersNotAd(i,2))
-        if count(indBS(j))<15
+        if count(indBS(j))<32
         %%calcolo interferenza causata da utente k
         Ptot = Itot(indBS(j)) + Pnoise(indBS(j));                         %Ptot= potenza ricevuta utente k + Itot + Pnoise
         loadF = Ctot(indBS(j))/Ptot;
@@ -160,7 +162,9 @@ end
          %%Calcolo C/I utente
          Users(UsersCell(k,1),8) = abs(Users(UsersCell(k,1),6)/(Itot1-Users(UsersCell(k,1),6)));
      end
+     rapporto = (Itot1-Users(1,6))/(((length(ind)-1)*Users(1,6)));   %approssimato
   end
+  
    
 %%
 
